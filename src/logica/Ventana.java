@@ -8,16 +8,14 @@ public class Ventana extends JFrame {
     private BarraDeHerramientas menu;
     private AreaTexto areaTexto;
     private Terminal areaTerminal;
-    private ExploradorArchivos areaArchivos;
-    //private ExploradorArchivos exploradorArchivos;
+    private ExploradorArchivos exploradorArchivos;
     private JPanel panelPrincipal;
 
     public Ventana() {
         menu = new BarraDeHerramientas();
         areaTerminal = new Terminal();
         areaTexto = new AreaTexto();
-        areaArchivos = new ExploradorArchivos();
-        //exploradorArchivos = new ExploradorArchivos();
+        exploradorArchivos = new ExploradorArchivos();
         initComponents();
 
     }
@@ -32,9 +30,8 @@ public class Ventana extends JFrame {
         panelPrincipal.add(areaTexto, BorderLayout.CENTER);
         panelPrincipal.add(areaTerminal, BorderLayout.SOUTH);
         areaTerminal.setPreferredSize(new Dimension(200,200));
-        panelPrincipal.add(areaArchivos, BorderLayout.WEST);
-        areaArchivos.setPreferredSize(new Dimension(150,150));
-        //panelPrincipal.add(exploradorArchivos.getPanelIzquierda());
+        panelPrincipal.add(exploradorArchivos, BorderLayout.WEST);
+        exploradorArchivos.setPreferredSize(new Dimension(150,150));
         add(panelPrincipal);
         pack();
     }
