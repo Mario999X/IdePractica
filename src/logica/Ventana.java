@@ -33,6 +33,10 @@ public class Ventana extends JFrame {
         panelPrincipal.add(exploradorArchivos, BorderLayout.WEST);
         exploradorArchivos.setPreferredSize(new Dimension(150,150));
         add(panelPrincipal);
+
         pack();
     }
+
 }
+
+

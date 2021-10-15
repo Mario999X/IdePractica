@@ -1,7 +1,6 @@
 package logica;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.print.PrinterException;
 
 public class AreaTexto extends JScrollPane {

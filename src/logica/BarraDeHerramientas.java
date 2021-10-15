@@ -1,8 +1,12 @@
 package logica;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class BarraDeHerramientas {
+
+    private AreaTexto areaTexto;
 
     private JMenuBar menu;
     private JMenu menuArchivo;
@@ -48,6 +52,13 @@ public class BarraDeHerramientas {
         menuArchivo.add(menuArchivoOpcionGuardar);
         menuArchivo.add(menuArchivoOpcionGuardarComo);
         menuArchivo.add(menuArchivoOpcionImprimir);
+
+        menuArchivoOpcionImprimir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                areaTexto.print();
+            }
+        });
 
         //Menu Edicion
         menuEdicion = new JMenu();

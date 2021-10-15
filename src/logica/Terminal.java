@@ -7,7 +7,6 @@ public class Terminal extends JScrollPane {
     private JTextArea espacioTerminal;
 
     public Terminal (){
-
         espacioTerminal = new JTextArea();
         this.setViewportView(espacioTerminal);
     }
