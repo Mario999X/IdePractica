@@ -1,9 +1,13 @@
 package logica;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Ventana extends JFrame {
 
@@ -11,13 +15,13 @@ public class Ventana extends JFrame {
     private Terminal areaTerminal;
     private ExploradorArchivos exploradorArchivos;
     private JPanel panelPrincipal;
+    private File archivo;
 
     //Menu
     private JMenuBar menu;
     private JMenu menuArchivo;
     private JMenuItem menuArchivoOpcionNuevo;
     private JMenuItem menuArchivoOpcionAbrir;
-    private JFileChooser menuArchivoOpcionAbrirAccion;
     private JMenuItem menuArchivoOpcionGuardar;
     private JMenuItem menuArchivoOpcionGuardarComo;
     private JMenuItem menuArchivoOpcionImprimir;
@@ -32,7 +36,7 @@ public class Ventana extends JFrame {
     private JMenu menuAyuda;
     private JMenuItem menuAyudaOpcionAcercaDe;
     private JMenuItem menuAyudaOpcionVerAyuda;
-    
+
 
     public Ventana() {
         areaTerminal = new Terminal();
@@ -75,6 +79,7 @@ public class Ventana extends JFrame {
 
             menuArchivo.add(menuArchivoOpcionNuevo);
             menuArchivo.add(menuArchivoOpcionAbrir);
+
             menuArchivo.add(menuArchivoOpcionGuardar);
             menuArchivo.add(menuArchivoOpcionGuardarComo);
             menuArchivo.add(menuArchivoOpcionImprimir);
@@ -83,6 +88,19 @@ public class Ventana extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     areaTexto.print();
+                }
+            });
+
+            menuArchivoOpcionGuardarComo.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { guardarComoAccion();
+                }
+            });
+
+            menuArchivoOpcionGuardar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { guardarAccion();
+
                 }
             });
 
@@ -118,6 +136,27 @@ public class Ventana extends JFrame {
             menu.add(menuAyuda);
 
     }
+
+    private void guardarComoAccion(){
+
+            JFileChooser selector=new JFileChooser();
+            int opcion = selector.showSaveDialog(this);
+            archivo = selector.getSelectedFile();
+            try (FileWriter escritor = new FileWriter(archivo)) {
+                if (opcion == JFileChooser.APPROVE_OPTION)
+                    if(archivo !=null)
+                        escritor.write(areaTexto.getText());
+                        escritor.close();
+            }
+            catch(IOException e) {
+                System.out.println("Error: "+ e.getMessage());
+            }
+    }
+
+    private void guardarAccion(){
+        
+    }
+
 }
 
 
