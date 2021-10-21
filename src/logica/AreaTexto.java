@@ -12,6 +12,10 @@ public class AreaTexto extends JScrollPane {
         this.setViewportView(espacioEscribir);
     }
 
+    public JTextArea getEspacioEscribir() {
+        return espacioEscribir;
+    }
+
     public void setText(String texto){
         espacioEscribir.setText(texto);
     }

@@ -1,13 +1,10 @@
 package logica;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class Ventana extends JFrame {
 
@@ -59,6 +56,7 @@ public class Ventana extends JFrame {
         panelPrincipal.add(exploradorArchivos, BorderLayout.WEST);
         exploradorArchivos.setPreferredSize(new Dimension(150,150));
         add(panelPrincipal);
+        this.setTitle("Ide Mario Resa - " + "Sin titulo");
 
         pack();
     }
@@ -91,6 +89,18 @@ public class Ventana extends JFrame {
                 }
             });
 
+            menuArchivoOpcionAbrir.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        abrirAccion();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+
+                }
+            });
+
             menuArchivoOpcionGuardarComo.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) { guardarComoAccion();
@@ -99,10 +109,17 @@ public class Ventana extends JFrame {
 
             menuArchivoOpcionGuardar.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) { guardarAccion();
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        guardarAccion();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
 
                 }
             });
+
+            menuArchivoOpcionNuevo.addActionListener(e -> nuevoAccion());
 
             //Menu Edicion
             menuEdicion = new JMenu();
@@ -146,15 +163,52 @@ public class Ventana extends JFrame {
                 if (opcion == JFileChooser.APPROVE_OPTION)
                     if(archivo !=null)
                         escritor.write(areaTexto.getText());
-                        escritor.close();
+                        JOptionPane.showMessageDialog(null, "El archivo se ha guardado satisfactoriamente");
             }
             catch(IOException e) {
                 System.out.println("Error: "+ e.getMessage());
             }
     }
 
-    private void guardarAccion(){
-        
+    private void guardarAccion() throws IOException {
+        if (archivo == null){
+            guardarComoAccion();
+        }else {
+            FileWriter escritor = new FileWriter(archivo);
+            escritor.write(areaTexto.getText());
+            JOptionPane.showMessageDialog(null, "El archivo se ha guardado satisfactoriamente");
+            escritor.close();
+        }
+    }
+
+    private void abrirAccion() throws IOException {
+        if(!areaTexto.getText().equals("")){
+            if(JOptionPane.showConfirmDialog(menuArchivoOpcionAbrir, "Deberias guardar","Warning", JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE)==JOptionPane.YES_OPTION);
+            guardarAccion();
+        }
+        JFileChooser selector = new JFileChooser();
+
+        int opcion = selector.showOpenDialog(this);
+        archivo = selector.getSelectedFile();
+        this.setTitle("Ide Mario Resa - " + archivo.getName());
+        if(opcion == JFileChooser.APPROVE_OPTION){
+            FileReader fr = new FileReader(archivo);
+            BufferedReader br = new BufferedReader(fr);
+            areaTexto.setText("");
+            String line = br.readLine();
+            while(!(line == null)){
+                areaTexto.getEspacioEscribir().append(line + "\n");
+                line = br.readLine();
+            }br.close();
+        }
+
+    }
+
+    private void nuevoAccion(){
+        archivo = null;
+        areaTexto.setText("");
+        this.setTitle("Ide Mario Resa - " + "Sin titulo");
+
     }
 
 }
