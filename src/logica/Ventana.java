@@ -1,7 +1,10 @@
 package logica;
 
 import javax.swing.*;
+import javax.swing.undo.UndoManager;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -137,6 +140,34 @@ public class Ventana extends JFrame {
             menuEdicion.add(menuEdicionOpcionPegar);
             menuEdicion.add(menuEdicionOpcionEliminar);
 
+            menuEdicionOpcionCopiar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { copiarAccion();
+
+                }
+            });
+
+            menuEdicionOpcionCortar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { cortarAccion();
+
+                }
+            });
+
+            menuEdicionOpcionDeshacer.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                }
+            });
+
+            menuEdicionOpcionPegar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { pegarAccion();
+
+                }
+            });
+
             // Menu Ayuda
             menuAyuda = new JMenu();
             menuAyuda.setText("Ayuda");
@@ -208,6 +239,41 @@ public class Ventana extends JFrame {
         archivo = null;
         areaTexto.setText("");
         this.setTitle("Ide Mario Resa - " + "Sin titulo");
+
+    }
+
+    private void copiarAccion(){
+        try {
+            StringSelection stringSelection = new StringSelection(areaTexto.getText());
+            java.awt.datatransfer.Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
+        } catch (Exception ignored) {
+        }
+    }
+
+    // NO ESTA COMPLETO: CORTAR
+    private void cortarAccion(){
+        try {
+            StringSelection stringSelection = new StringSelection(areaTexto.getText());
+            areaTexto.setText("");
+            java.awt.datatransfer.Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
+        } catch (Exception ignored) {
+        }
+    }
+
+    private void pegarAccion(){
+        //este es nuestro objeto Transferable para trabajar con strings
+        StringSelection ss = new StringSelection("Hola Mundo");
+
+        //accedemos al portapapeles del sistema
+        Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+
+        //añadimos nuestro dato Transferable y como no usaremos ningún clipboardOwner le pasamos null como argumento
+        cb.setContents(ss, null);
+    }
+
+    private void deshacerAccion(){
 
     }
 
