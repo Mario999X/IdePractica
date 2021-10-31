@@ -4,7 +4,8 @@ import logica.Ventana;
 
 import javax.swing.*;
 
-public class principal {
+//CLASE ENCARGADA DE INICIAR EL PROYECTO
+public class Principal {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
