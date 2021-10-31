@@ -12,5 +12,4 @@ public class ExploradorArchivos extends JScrollPane {
 
     }
 
-
 }

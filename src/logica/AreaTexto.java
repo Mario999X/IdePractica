@@ -1,7 +1,6 @@
 package logica;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.print.PrinterException;
 
 public class AreaTexto extends JScrollPane {
@@ -13,12 +12,16 @@ public class AreaTexto extends JScrollPane {
         this.setViewportView(espacioEscribir);
     }
 
+    public JTextArea getEspacioEscribir() {
+        return espacioEscribir;
+    }
+
     public void setText(String texto){
         espacioEscribir.setText(texto);
     }
 
     public String getText(){
-       return espacioEscribir.getText();
+        return espacioEscribir.getText();
     }
 
     public void print(){
