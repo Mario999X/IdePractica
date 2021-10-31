@@ -12,6 +12,7 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
+// CLASE ENCARGADA DE GENERAR LA VENTANA PRINCIPAL DEL PROYECTO
 public class Ventana extends JFrame {
 
     private AreaTexto areaTexto;
@@ -83,6 +84,7 @@ public class Ventana extends JFrame {
         compilar = new JButton("Compilar");
         ejecutar = new JButton("Run");
 
+
         //MENU ARCHIVO
         //Generacion general
         menuArchivo = new JMenu();
@@ -101,6 +103,8 @@ public class Ventana extends JFrame {
         menuArchivo.add(menuArchivoOpcionGuardarComo);
         menuArchivo.add(menuArchivoOpcionImprimir);
 
+
+        //Listeners de "archivo"
         menuArchivoOpcionImprimir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -140,7 +144,9 @@ public class Ventana extends JFrame {
 
         menuArchivoOpcionNuevo.addActionListener(e -> nuevoAccion());
 
-        //Menu Edicion
+
+        //MENU EDICION
+        //Generacion general
         menuEdicion = new JMenu();
         menuEdicion.setText("Edición");
 
@@ -158,6 +164,8 @@ public class Ventana extends JFrame {
         menuEdicion.add(menuEdicionOpcionPegar);
         menuEdicion.add(menuEdicionOpcionEliminar);
 
+
+        //Listeners Edicion
         menuEdicionOpcionCopiar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) { copiarAccion();
@@ -201,6 +209,42 @@ public class Ventana extends JFrame {
             }
         });
 
+
+        //MENU AYUDA
+        //Generacion general
+        menuAyuda = new JMenu();
+        menuAyuda.setText("Ayuda");
+
+        menuAyudaOpcionAcercaDe = new JMenuItem("Acerca de");
+        menuAyudaOpcionVerAyuda = new JMenuItem("Ver Ayuda");
+
+        menuAyuda.add(menuAyudaOpcionAcercaDe);
+        menuAyuda.add(menuAyudaOpcionVerAyuda);
+
+
+        //Listeners Ayuda
+        menuAyudaOpcionAcercaDe.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                inf();
+            }
+        });
+
+        menuAyudaOpcionVerAyuda.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    url();
+                } catch (URISyntaxException ex) {
+                    ex.printStackTrace();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+
+        //Listeners particulares
         ejecutar.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -263,37 +307,8 @@ public class Ventana extends JFrame {
             }
         });
 
-        // Menu Ayuda
-        menuAyuda = new JMenu();
-        menuAyuda.setText("Ayuda");
 
-        menuAyudaOpcionAcercaDe = new JMenuItem("Acerca de");
-        menuAyudaOpcionVerAyuda = new JMenuItem("Ver Ayuda");
-
-        menuAyuda.add(menuAyudaOpcionAcercaDe);
-        menuAyuda.add(menuAyudaOpcionVerAyuda);
-
-        menuAyudaOpcionAcercaDe.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                inf();
-            }
-        });
-
-        menuAyudaOpcionVerAyuda.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    url();
-                } catch (URISyntaxException ex) {
-                    ex.printStackTrace();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-
-        //Agrego menu
+        //Agregacion menu
         menu.add(menuArchivo);
         menu.add(menuEdicion);
         menu.add(menuAyuda);
@@ -302,6 +317,9 @@ public class Ventana extends JFrame {
 
     }
 
+
+    //GENERACION METODOS
+    //Metodos "Archivo"
     private void guardarComoAccion(){
 
         JFileChooser selector=new JFileChooser();
@@ -359,6 +377,8 @@ public class Ventana extends JFrame {
 
     }
 
+
+    //Metodos "Edicion"
     private void copiarAccion(){
         if (areaTexto.getEspacioEscribir().getSelectedText() != null){
             StringSelection selector = new StringSelection("" + areaTexto.getEspacioEscribir().getSelectedText());
@@ -405,7 +425,24 @@ public class Ventana extends JFrame {
     }
 
 
+    //Metodos "Ayuda"
+    private void inf(){
+        JOptionPane.showMessageDialog(this,"Mario Resa");
+    }
 
+    private void url() throws URISyntaxException, IOException {
+        if (java.awt.Desktop.isDesktopSupported()) {
+            java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+
+            if (desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {
+                java.net.URI uri = new java.net.URI("https://github.com/Mario999X/IdePractica");
+                desktop.browse(uri);
+            }
+        }
+    }
+
+
+    //Metodos especificos
     private void run() throws IOException {
 
         if (Objects.equals(areaTexto.getText(), "") || archivo == null) {
@@ -415,7 +452,7 @@ public class Ventana extends JFrame {
             guardarAccion();
             Runtime cmd = Runtime.getRuntime();
             String runJava = "java " + archivo.getPath();
-            readInConsole(cmd, runJava);
+            leerEnConsola(cmd, runJava);
             JOptionPane.showMessageDialog(null, "En funcionamiento", "Message Dialog", JOptionPane.INFORMATION_MESSAGE);
         }
     }
@@ -428,12 +465,12 @@ public class Ventana extends JFrame {
             guardarAccion();
             Runtime cmd = Runtime.getRuntime();
             String buildJava = "javac " + archivo.getPath();
-            readInConsole(cmd, buildJava);
+            leerEnConsola(cmd, buildJava);
             JOptionPane.showMessageDialog(null, "Compilacion realizada correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
-    private void readInConsole(Runtime cmd, String command) throws IOException {
+    private void leerEnConsola(Runtime cmd, String command) throws IOException {
 
         Process proc = cmd.exec(command);
         InputStream inputStream = proc.getInputStream();
@@ -452,21 +489,6 @@ public class Ventana extends JFrame {
         while ((errorline = errorBufferedReader.readLine()) != null) {
             areaTerminal.getTerminal().append(errorline + "\n");
             areaTerminal.getTerminal().setForeground(Color.RED);
-        }
-    }
-
-    private void inf(){
-        JOptionPane.showMessageDialog(this,"Mario Resa");
-    }
-
-    private void url() throws URISyntaxException, IOException {
-        if (java.awt.Desktop.isDesktopSupported()) {
-            java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
-
-            if (desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {
-                java.net.URI uri = new java.net.URI("https://github.com/Mario999X/IdePractica");
-                desktop.browse(uri);
-            }
         }
     }
 

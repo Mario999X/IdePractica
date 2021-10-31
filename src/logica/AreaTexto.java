@@ -3,6 +3,7 @@ package logica;
 import javax.swing.*;
 import java.awt.print.PrinterException;
 
+//CLASE ENCARGADA DE CREAR LAS CARACTERISTICAS DE UN AREA DE TEXTO PERSONALIZADO
 public class AreaTexto extends JScrollPane {
     private JTextArea espacioEscribir;
 

@@ -5,6 +5,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.print.PrinterException;
 
+//CLASE ENCARGADA DE GENERAR LAS CARACTERISTICAS DE UN TERMINAL O CONSOLA PERSONALIZADA
 public class Terminal extends JScrollPane {
     private JTextArea terminal;
 
